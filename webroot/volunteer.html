@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Volunteer App</title>
+    <meta charset="windows-1251">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="vertx-eventbus.js"></script>
+
+    <style type="text/css">
+        body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .received{
+            width: 160px;
+            font-size: 10px;
+        }
+
+        input[type=text]:focus, textarea:focus{
+            box-shadow: 0 0 5px #4cae4c;
+            border: 1px solid #4cae4c;
+        }
+
+        .tab-content{
+            padding:5px
+        }
+    </style>
+
+    <script>
+        var online = 0; //counter of online users.
+        var eb = new EventBus("/eventbus/"); //event bus.
+
+        eb.onopen = function() {
+            //registration event handler in the chat.
+            eb.registerHandler("panic.to.volunteer", confirmationProcessing);
+        };
+
+        //event handler in the chat.
+        function confirmationProcessing(err, msg) {
+            var event = jQuery.parseJSON(msg.body);
+                var $msg = $('<tr bgcolor="#f2dede"><td align="left">' + event.patient
+                    + '</td><td align="left">' + event.problem + '</td>'
+                    + '<td><button onclick="confirmAlarm(this)" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Confirm</button></td>'
+                    + '<td><button onclick="removeAlarm(this)" class="removealarm btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject</button></td>'
+                    + '</tr>');
+                $('#messages').append($msg);
+        };
+
+        function confirmAlarm(el) {
+            eb.publish("confirmation.from.volunteer",  'test');
+            $(el).parent().parent().remove();
+        }
+
+
+        function removeAlarm(el) {
+            $(el).parent().parent().remove();
+        }
+    </script>
+</head>
+<body>
+      <div class="panel panel-success">
+                <div class="panel-heading"><h3>Active Alarms</h3></div>
+                    <table id="messages" class="table table-hover" width="100%">
+                        <colgroup>
+                            <col style="width:10%">
+                            <col style="width:10%">
+                            <col style="width:10%">
+                            <col style="width:10%">
+                        </colgroup>
+                    </table>
+            </div>
+</body>
+</html>
