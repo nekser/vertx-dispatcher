@@ -40,16 +40,12 @@ var eb = vertx.eventBus();
 eb.consumer("panic.from.patient").handler(function (message) {
 
   console.log("New panic signal recieved");
-  var signal = JSON.parse(message.body());
-  var timestamp = Java.type("java.text.DateFormat").getDateTimeInstance(Java.type("java.text.DateFormat").SHORT, Java.type("java.text.DateFormat").MEDIUM).format(Java.type("java.util.Date").from(Java.type("java.time.Instant").now()));
-
   eb.publish("panic.to.volunteer", message.body());
 });
 
 eb.consumer("confirmation.from.volunteer").handler(function (message) {
 
   var timestamp = Java.type("java.text.DateFormat").getDateTimeInstance(Java.type("java.text.DateFormat").SHORT, Java.type("java.text.DateFormat").MEDIUM).format(Java.type("java.util.Date").from(Java.type("java.time.Instant").now()));
-
   eb.publish("confirmation.to.patient", timestamp + ": " + message.body());
 });
 

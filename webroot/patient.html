@@ -34,7 +34,6 @@
     </style>
 
     <script>
-        var online = 0; //counter of online users.
         var eb = new EventBus("/eventbus/"); //event bus.
 
         eb.onopen = function() {
@@ -45,32 +44,6 @@
         function confirmationSuccess(message) {
             alert('Your signal was confirmed. Wait for volunteer');
         }
-
-  //       //event handler in the chat.
-  //       function confirmationProcessing(err, msg) {
-  //           var event = jQuery.parseJSON(msg.body);
-
-		// 	if (event.type == 'publish') {//is message.
-		// 		var time = Date.parse(event.time);
-		// 		var formattedTime = dateFormat(time, "dd.mm.yy HH:MM:ss");
-
-		// 		appendMsg(event.host, event.port, event.message, formattedTime);
-		// 	}
-  //       };
-
-  //       //adding of new message.
-		// function appendMsg(host, port, message, formattedTime){
-		// 	var $msg = $('<tr bgcolor="#dff0d8"><td align="left">' + formattedTime
-		// 			+ '</td><td align="left">' + host + ' [' + port + ']'
-		// 			+ '</td><td>' + message
-		// 			+ '</td></tr>');
-
-  //           var countMsg = $('#messages tr').length;
-		// 	if (countMsg == 0)
-		// 		$('#messages').append($msg);
-		// 	else
-		// 	    $('#messages > tbody > tr:first').before($msg);
-		// }
 
         $(document).ready(function() {
             //event of sending of the message.
